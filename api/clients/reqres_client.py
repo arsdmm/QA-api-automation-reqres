@@ -1,5 +1,3 @@
-# api/clients/reqres_client.py
-
 from __future__ import annotations
 
 from typing import Any, Dict, Optional
@@ -8,7 +6,7 @@ from .base_client import BaseClient, ApiResponse
 
 
 class ReqresClient(BaseClient):
-    
+
     def login(self, email: str, password: str) -> ApiResponse:
         payload = {"email": email, "password": password}
         return self.post("/api/login", json=payload)
