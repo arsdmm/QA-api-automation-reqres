@@ -1,0 +1,2 @@
+REQRES_BASE_URL = "https://reqres.in"
+DEFAULT_TIMEOUT_SECONDS = 10
