@@ -2,7 +2,7 @@ import responses
 
 from api.config import REQRES_BASE_URL
 from api.models.user_models import User
-
+from api.models.user_models import SingleUserResponse, ListUsersResponse
 
 @responses.activate
 def test_get_user_mock(reqres_client):
@@ -25,8 +25,8 @@ def test_get_user_mock(reqres_client):
     resp = reqres_client.get_user(user_id=2)
 
     assert resp.status_code == 200
-    user = User.model_validate(resp.json["data"])
-    assert user.id == 2
+    payload = SingleUserResponse.model_validate(resp.json)
+    assert payload.data.id == 2
 
 
 @responses.activate
@@ -53,5 +53,6 @@ def test_list_users_mock(reqres_client):
     resp = reqres_client.list_users(page=1)
 
     assert resp.status_code == 200
-    users = [User.model_validate(u) for u in resp.json["data"]]
-    assert len(users) == 1
+    payload = ListUsersResponse.model_validate(resp.json)
+    assert payload.page == 1
+    assert len(payload.data) == 1
