@@ -1,4 +1,5 @@
 import responses
+import pytest
 
 from api.config import REQRES_BASE_URL
 from api.models.auth_models import LoginSuccessResponse, ErrorResponse
@@ -32,3 +33,60 @@ def test_login_missing_password_mock(reqres_client):
     assert resp.status_code == 400
     model = ErrorResponse.model_validate(resp.json)
     assert model.error == "Missing password"
+
+@pytest.mark.parametrize(
+    "payload, expected_status, expected_error",
+    [
+        (
+            {"email": "peter@klaven"},
+            400,
+            "Missing password",
+        ),
+        (
+            {"password": "123"},
+            400,
+            "Missing email",
+        ),
+        (
+            {"email": "x", "password": "y"},
+            400,
+            "user not found",
+        ),
+    ],
+)
+@responses.activate
+def test_login_errors_mock(
+    reqres_client,
+    payload,
+    expected_status,
+    expected_error,
+):
+    responses.add(
+        method=responses.POST,
+        url=f"{REQRES_BASE_URL}/api/login",
+        json={"error": expected_error},
+        status=expected_status,
+        content_type="application/json",
+    )
+
+    resp = reqres_client.post("/api/login", json=payload)
+
+    assert resp.status_code == expected_status
+    error = ErrorResponse.model_validate(resp.json)
+    assert error.error == expected_error
+
+
+@responses.activate
+def test_baseclient_sets_content_type_in_headers(reqres_client):
+    responses.add(
+        method=responses.GET,
+        url=f"{REQRES_BASE_URL}/api/users/2",
+        json={"data": {"id": 2, "email": "a@b.com", "first_name": "A", "last_name": "B", "avatar": "https://x.com/a.jpg"}},
+        status=200,
+        content_type="application/json",
+    )
+
+    resp = reqres_client.get_user(user_id=2)
+
+    assert resp.status_code == 200
+    assert "application/json" in resp.headers.get("Content-Type", "")
