@@ -55,3 +55,42 @@ def test_list_users_mock(reqres_client):
     payload = ListUsersResponse.model_validate(resp.json)
     assert payload.page == 1
     assert len(payload.data) == 1
+
+
+@responses.activate
+def test_get_user_not_found_mock(reqres_client):
+    responses.add(
+        method=responses.GET,
+        url=f"{REQRES_BASE_URL}/api/users/999",
+        json={
+            "error": "NO USER FOUND"
+        },
+        status=404,
+        content_type="application/json",
+    )
+
+    resp = reqres_client.get_user(user_id=999)
+
+    assert resp.status_code == 404
+    assert resp.json["error"] == "NO USER FOUND"
+
+@responses.activate
+def test_list_users_empty_mock(reqres_client):
+    responses.add(
+        method=responses.GET,
+        url=f"{REQRES_BASE_URL}/api/users?page=99",
+        json={
+            "page": 99,
+            "data": [],
+        },
+        status=200,
+        content_type="application/json",
+    )
+
+    resp = reqres_client.list_users(page=99)
+
+    assert resp.status_code == 200
+    payload = ListUsersResponse.model_validate(resp.json)
+    assert len(payload.data) == 0
+    assert payload.page == 99
+    assert payload.data == []
