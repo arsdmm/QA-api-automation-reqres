@@ -44,7 +44,7 @@ tests/
 
 ## 3. Architecture Overview
 
-BaseClient
+**BaseClient**
 
 BaseClient is a low-level HTTP wrapper around the requests library.
 It is responsible for:
