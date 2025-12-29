@@ -18,7 +18,23 @@ and stable mock-based tests without dependency on external services.
 
 ---
 
-## 2. Project Structure
+## 2. Testing Scope
+
+This framework focuses on the API Client layer and validates:
+
+- request/response contracts
+- client-side behavior
+- error handling and edge cases
+- HTTP metadata (status codes, headers)
+
+It intentionally avoids:
+- UI testing
+- integration with real external APIs
+- database validation
+
+---
+
+## 3. Project Structure
 
 ```text
 api/
@@ -42,7 +58,7 @@ tests/
 
 ---
 
-## 3. Architecture Overview
+## 4. Architecture Overview
 
 **BaseClient**
 
@@ -59,7 +75,7 @@ This layer is independent of any specific API.
 
 ---
 
-## 4. ReqresClient
+## 5. ReqresClient
 
 ReqresClient is a higher-level client that describes
 business endpoints of the Reqres API, such as:
@@ -72,7 +88,7 @@ It delegates all HTTP logic to BaseClient.
 
 ---
 
-## 5. Pydantic Models
+## 6. Pydantic Models
 
 Pydantic models are used to validate API response contracts.
 They ensure that the structure of the response matches expectations
@@ -80,7 +96,7 @@ without writing multiple field-level assertions.
 
 ---
 
-## 6. Mock-based Testing (responses)
+## 7. Mock-based Testing (responses)
 
 All API tests use the responses library to mock HTTP responses.
 This allows tests to:
@@ -93,7 +109,7 @@ The tests validate client behavior, not the real Reqres service.
 
 ---
 
-## 7. Test Coverage
+## 8. Test Coverage
 
 The project includes the following test types:
 
@@ -105,7 +121,7 @@ The project includes the following test types:
 
 ---
 
-## 8. Running the Tests
+## 9. Running the Tests
 
 ```powershell
 python -m venv venv
@@ -117,7 +133,7 @@ pytest -v
 
 ---
 
-## 9. Purpose
+## 10. Purpose
 
 This project demonstrates:
 
