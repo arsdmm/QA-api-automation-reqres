@@ -58,7 +58,31 @@ tests/
 
 ---
 
-## 4. Architecture Overview
+## 4. Manual QA Documentation
+
+This repository includes a complete set of manual QA artifacts
+for the same Reqres API that is covered by automated tests.
+
+The manual documentation reflects a real-world QA workflow where
+test cases are designed first and critical scenarios are later automated.
+
+### Manual QA Artifacts
+
+- **Test Plan**  
+  `manual-qa/test-plan/reqres_api_test_plan.md`
+
+- **Manual Test Cases**  
+  `manual-qa/test-cases/reqres_api_test_cases.md`
+
+- **Bug Reports (sample)**  
+  `manual-qa/bug-reports/sample_bug_reports.md`
+
+- **Traceability Matrix (manual ↔ automation)**  
+  `manual-qa/traceability/traceability_matrix.md`
+
+---
+
+## 5. Architecture Overview
 
 **BaseClient**
 
@@ -75,7 +99,7 @@ This layer is independent of any specific API.
 
 ---
 
-## 5. ReqresClient
+## 6. ReqresClient
 
 ReqresClient is a higher-level client that describes
 business endpoints of the Reqres API, such as:
@@ -88,7 +112,7 @@ It delegates all HTTP logic to BaseClient.
 
 ---
 
-## 6. Pydantic Models
+## 7. Pydantic Models
 
 Pydantic models are used to validate API response contracts.
 They ensure that the structure of the response matches expectations
@@ -96,7 +120,7 @@ without writing multiple field-level assertions.
 
 ---
 
-## 7. Mock-based Testing (responses)
+## 8. Mock-based Testing (responses)
 
 All API tests use the responses library to mock HTTP responses.
 This allows tests to:
@@ -109,7 +133,7 @@ The tests validate client behavior, not the real Reqres service.
 
 ---
 
-## 8. Test Coverage
+## 9. Test Coverage
 
 The project includes the following test types:
 
@@ -121,7 +145,7 @@ The project includes the following test types:
 
 ---
 
-## 9. Running the Tests
+## 10. Running the Tests
 
 ```powershell
 python -m venv venv
@@ -133,7 +157,7 @@ pytest -v
 
 ---
 
-## 10. Purpose
+## 11. Purpose
 
 This project demonstrates:
 
